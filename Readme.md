@@ -1,5 +1,9 @@
 # Resumen Final Orga2
 
+[Versión PDF (recomendado)](https://docs.google.com/viewer?url=https://raw.githubusercontent.com/asdolo/orga-2-final/master/Resumen_Final_Orga2.pdf)
+
+---
+
 # Tecnología de integración
 
 ### Escenario actual
