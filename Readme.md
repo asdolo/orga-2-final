@@ -22,8 +22,9 @@ Los progresos en scaling muchas veces obedecen a mejoras en el proceso de fabric
 - Strained Silicon
 - High-k Metal Gate
 - Tri-Gate:
-
+    
     Ademas del scaling, disminuye mucho el consumo. En 2011 el consumo de energía es una preocupación muy fuerte.
+    
 
 **Velocidad de conmutación:** Es la velocidad que tarda en la que un transistor pasa de 0 a 1. **Evoluciona en función del scaling: cuanto más chico es el transistor, más alta es la velocidad de conmutación.**
 
@@ -53,13 +54,19 @@ Es el conjunto de recursos que nosotros tenemos como programadores para poder tr
 
 Es la implementación es el silicio de la arquitectura. Lo que está detrás del set de instrucciones. Determina de qué manera se ejecutan las instrucciones, cuán rápido o no. Cuestiones que están relacionadas a electrónica, tecnología, materiales, etc. Un procesador con una misma arquitectura tenga una estructura muy sólida, robusta, performante, y otro procesador con la misma arquitectura pero con una organización o microarquitectura diferente por debajo sea un procesador menos performante, más econónico, más lento, que consuma menos. **Cambian de un modelo a otro. Es "levantar el capó y ver qué hay debajo de la arquitectura".**
 
-IA-32 es una **arquitectura**. Se inicia con el procesador 80386 en 1985 y llega hasta los procesadores Intel Core i7, i5, i3, ATOM y Xeon.
+<aside>
+💡 IA-32 es una **arquitectura**. Se inicia con el procesador 80386 en 1985 y llega hasta los procesadores Intel Core i7, i5, i3, ATOM y Xeon.
 
 En el camino han pasado diferentes generaciones de **Microarquitectura** para más de 25 modelos de procesadores.
 
+</aside>
+
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%201.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%201.png)
 
-**Microarquitectura = Organización + Hardware**
+<aside>
+💡 **Microarquitectura = Organización + Hardware**
+
+</aside>
 
 ## Organización
 
@@ -82,8 +89,6 @@ Se refiere a cosas todavía más "de abajo".
 - Comprender qué hay debajo del software.
 - Comprender cómo el diseño de un hardware en particular impacta nuestra tareas como programadores.
 
-# ________________________________________________________________________________________
-
 # Sistema de Memoria
 
 ## Jerarquías de Memorias
@@ -102,13 +107,19 @@ Se refiere a cosas todavía más "de abajo".
 
 El comportamiento de los algoritmos de software que se emplean habitualmente, es el que rige cómo y para qué se diseña el hardware. Muchas de las cosas que se diseña en hardware no son inventos, son simplemente observaciones de cómo se comportamiento y, entonces, buscar soluciones para agilizar ese comportamiento.
 
-**Principio de vecindad temporal**
+<aside>
+💡 **Principio de vecindad temporal**
 
 Una dirección de memoria que está siendo accedida actualmente tiene muy alta probabilidad de seguir siendo accedida en el futuro inmediato.
 
-**Principio de vecindad espacial**
+</aside>
+
+<aside>
+💡 **Principio de vecindad espacial**
 
 Si se está accediendo a una dirección determinada de memoria actualmente, la probabilidad de que esta dirección y sus direcciones vecinas sean accedidas en el futuro inmediato es muy alta.
+
+</aside>
 
 # Tecnologías de Memoria
 
@@ -171,9 +182,12 @@ El problema consiste en decidir qué tipo de RAM usar en el sistema. Hay dos opc
     - Costo por bit alto (por ser menos densa).
     - Tiempo de acceso bajo (es más rápida).
 
-**Conclusión:**
+<aside>
+💡 **Conclusión:**
 
 No podemos poner un banco de RAM estática porque el costo y consumo es muy elevado. Entonces, elegimos usar RAM dinámica, aunque al ser lentas no podemos aprovechar la velocidad superior del procesador (cuello de botella). **Esto último se resolvió con la memoria cache.**
+
+</aside>
 
 # Memoria Cache
 
@@ -193,7 +207,7 @@ Quién se encarga de que las cosas que están en la DRAM que el procesador va a 
 
 Para medir la eficiencia de esto, se establecieron métricas. La operación de memoria es un **hit** o un **miss** según encuentre o no encuentre lo que busca en el cache (cuando lo encuentra es un **hit**, y cuando no lo encuentra es un **miss**). El **hitrate** se mide con la relación entre la **cantidad de hit** sobre la **cantidad de accesos totales**.
 
-![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%205.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%205.png)
+![**Queremos que el hitrate tienda a 1.**](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%205.png)
 
 **Queremos que el hitrate tienda a 1.**
 
@@ -203,7 +217,10 @@ Para medir la eficiencia de esto, se establecieron métricas. La operación de m
 
 Quien maneja el BUS de control es quien maneja el BUS del sistema. **Este BUS ahora es manejado por el Controlador de Cache. El Controlador de Cache es el master del BUS de control. La idea es que intercepta los pedidos del procesador y se los manda o bien a la Memoria cache o bien a la memoria RAM según haya un hit o miss.**
 
-El BUS de control es un bus con líneas de control del tipo **Read**, **Write**, etc.
+<aside>
+💡 El BUS de control es un bus con líneas de control del tipo **Read**, **Write**, etc.
+
+</aside>
 
 ### Operación de acceso a memoria para lectura
 
@@ -211,11 +228,11 @@ El BUS de control es un bus con líneas de control del tipo **Read**, **Write**,
 
 1. El procesador inicia un ciclo de lectura. Pone la dirección de memoria en el BUS de address y **activa la línea Memory Read en el BUS de control**.
 2. El controlador de Cache toma la línea de `Memory Read` (pues maneja el BUS de control) y dice, "Ok, el procesador quiere leer". También le llega el BUS de address y entonces puede saber qué dirección quiere leer. El controlador de Cache mira si la dirección de memoria está guardada en la cache (usa el directorio interno). **Sabe si tiene un hit o un miss.**
-
+    
     a. Si tiene un **hit**, le manda el `Memory Read` a la cache en vez de enviarselo a la memoria RAM. La cache responde el dato por el BUS de data y el procesador lo lee. **Fin.**
-
+    
     b.
-
+    
     1. Si tiene un **miss**, le manda el `Memory Read` a la RAM. La memoria RAM se toma su tiempo para acceder al dato y luego mete el dato en el BUS de datos.
     2. Además, el controlador de cache le dice a la memoria cache que un dato va a ser escrito (seteando la linea `Memory Write` en su BUS de control) y le manda la misma data que devolvió la RAM en el punto anterior. Este dato lo guarda para honrar el principio de vecindad temporal.
     3. Luego, el controlador de cache actualiza la dirección en su directorio de cache.
@@ -245,9 +262,9 @@ A cada línea dentro del caché se le asigna una etiqueta (tag). El tag indica l
 **Funcionamiento:**
 
 1. Particiono la dirección.
-
+    
     ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2010.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2010.png)
-
+    
 2. Accedo al número de set en el Directorio Cache.
 3. Comparo el número de banco en la dirección con el tag almacenado en la entrada del directorio cache.
     - **Si el tag del directorio cache NO coincide con el número de banco de la dirección, miss.**
@@ -296,9 +313,12 @@ En un sistema multi-procesador, la política de write back es, en principio, inv
 
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2012.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2012.png)
 
-**SMP = Symmetric Multi-Processing**
+<aside>
+💡 **SMP = Symmetric Multi-Processing**
 
 Se dice simétrico porque los procesador son iguales, son simétricos.
+
+</aside>
 
 **Escenario:**
 
@@ -316,7 +336,10 @@ Independientemente de la política que utilicemos, tenemos que restaurar la cohe
 
 El procesador 1 escribió una variable. La variable se refrescó también en la DRAM (asumiendo que utilizamos write through o write through buffered). Esto quiere decir que por el BUS del sistema viajó la variable. Con el Snoop BUS, los controladores de cache espían el BUS de address y el BUS de control dentro del BUS del sistema para saber qué hacen los demás. Entonces, cuando un procesador detecta una dirección que se está escribiendo por otro procesador, marca la dirección como inválida en su memoria cache, así la próxima vez la va a buscar a la DRAM. **El Snoop BUS resuelve el problema de la coherencia.**
 
-**El Snoop BUS no es BUS entre los controladores. No une a los controladores. Une a cada controlador con el BUS de address del sistema, pero en sentido inverso.**
+<aside>
+⚠️ **El Snoop BUS no es BUS entre los controladores. No une a los controladores. Une a cada controlador con el BUS de address del sistema, pero en sentido inverso.**
+
+</aside>
 
 **Siguiente motivación:**
 
@@ -328,9 +351,12 @@ Si bien el Snoop BUS resuelve el problema de coherencia, nos gustaría hacer opt
 
 ### Protocolo MESI
 
-**M.E.S.I. = Modified, Exclusive, Shared, Invalid**
+<aside>
+💡 **M.E.S.I. = Modified, Exclusive, Shared, Invalid**
 
 Son los cuatro estados que puede tomar cada línea de cache en un controlador.
+
+</aside>
 
 **`Modified`:**
 
@@ -408,8 +434,6 @@ La cache level 1 la metieron adentro del chip del procesador para incrementarle 
 
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2017.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2017.png)
 
-# ________________________________________________________________________________________
-
 # Paralelismo a Nivel de Instrucción
 
 ## Pipeline
@@ -420,7 +444,7 @@ Una instrucción en un computador se ejecuta en etapas. Según el modelo de Von 
 
 Antes del 80286, la mayoría de los microprocesadores ejecutaban cada etapa en serie. Es decir, en el primer ciclo de clock, se ejecutaba una etapa de una instrucción, luego se ejecutaba la siguiente etapa de la misma instrucción, y así sucesivamente hasta haber ejecutado la última etapa de esa instrucción, para luego empezar ejecutando la primer etapa de la siguiente instrucción.
 
-![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2018.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2018.png)
+![Ejecución de una instrucción de forma serializada](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2018.png)
 
 Ejecución de una instrucción de forma serializada
 
@@ -520,14 +544,15 @@ En el quinto ciclo, se genera el resultado de la suma, pero dicho resultado es r
 **Posibles soluciones:**
 
 - **Forwarding:**
-
+    
     Retroalimento la ALU con la salida en el mismo ciclo que termina de ejecutarse la operación aritmética, así, en el ciclo 5, la ALU ya tiene el operando correcto sin haber pasado por R1. No soluciona el problema del todo, pero se ahorra un ciclo.
-
+    
     ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2028.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2028.png)
-
+    
     No siempre se puede hacer forwarding. Si la primer operación no pasa por la ALU no se puede hacer forward.
-
+    
     ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2029.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2029.png)
+    
 
 **Obstáculos de control:**
 
@@ -604,7 +629,7 @@ Los métodos anteriores dependían del compilador, del set de instrucciones. El 
 **Branch Target Buffer**
 
 - Tabla en caché que sirve para saber la dirección de salto (if taken).
-- Cada entrada contiene la dirección de la instrucción de salto y la dirección target resuelta (en vez de los bits taken o non-taken, a diferencia de la Brancg Prediction Buffer).
+- Cada entrada contiene la dirección de la instrucción de salto y la dirección target resuelta (en vez de los bits taken o non-taken, a diferencia de la Branch Prediction Buffer).
 - Es más rápido que el Branch Prediction Buffer (ya que ahora directamente podemos obtener la dirección de salto de esta tabla), pero el criterio sigue siendo el mismo.
 - La proxima vez que nos topamos con el branch, la buscamos en la BTB. Si tenemos un hit, usamos la address guardada en la BTB para fetchear instrucciones.
 - Si el valor no se encuentra en la BTB, se asume taken.
@@ -628,7 +653,7 @@ El Pentium fue el primer procesador superscalar de la familia Intel.
 
 ### Problemas
 
-- Los [obstáculos estructurales](https://www.notion.so/asdolo/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975#9099dba0628641ff9c93e12f10a9c42e) ahora quedan más expuestos que antes. Ahora cada etapa, ademas de lidiar con las otras etapas de su propio pipeline (que pueden acceder en simultáneo a la misma instrucción o dato), también tiene que lidiar con las mismas etapas del pipeline de al lado, que también pueden ir a buscar datos o código. **Por eso los buses son muy importantes. Es importante separar buses de datos y address para minimizar los obstáculos estructurales.**
+- Los [obstáculos estructurales](https://www.notion.so/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975) ahora quedan más expuestos que antes. Ahora cada etapa, ademas de lidiar con las otras etapas de su propio pipeline (que pueden acceder en simultáneo a la misma instrucción o dato), también tiene que lidiar con las mismas etapas del pipeline de al lado, que también pueden ir a buscar datos o código. **Por eso los buses son muy importantes. Es importante separar buses de datos y address para minimizar los obstáculos estructurales.**
 - Cuantas más vias tenga el pipeline, más concurrencia de memoria.
 - Si tengo dos ALUs, puedo ejecutar una instrucción en cada uno. En el caso de que una ALU dependa del resultado de la otra, esto no es posible.
 - Una falla en el branch prediction limpia **todos** los pipelines.
@@ -678,16 +703,17 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2038.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2038.png)
 
 - **Write, After Read (WAR):**
-
+    
     La instrucción 3 escribe F8 y después la instrucción 2 lee F8. **La operación de la instrucción 2 tiene un operando inválido.**
-
+    
 - **Write, After Write (WAW):**
-
+    
     La instrucción 4 escribe F6 y después la instrucción 2 escribe F6. **Me quedo con un valor más viejo de F6 en la instrucción 5.**
-
+    
 - **Read, After Write (RAW):**
-
-    La instrucción 2 lee F0 y después la instrucción 1 escribe F0. **Este es el clásico obstáculo de datos que vimos al principio, antes de superscalarx. Se soluciona stalleando el pipeline.**
+    
+    La instrucción 2 lee F0 y después la instrucción 1 escribe F0. **Este es el clásico obstáculo de datos que vimos al principio, antes de superscalar. Se soluciona stalleando el pipeline.**
+    
 
 ### Excepciones imprecisas
 
@@ -696,7 +722,7 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 - Se debe preservar ese escenario.
 - Tendríamos que poder "bufferear" el estado de esa excepción.
 
-## Métodos prehistoricos
+## Método prehistorico
 
 ### Scoreboarding
 
@@ -732,7 +758,7 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 
 ### **Register Alias Table (RAT)**
 
-- **Soluciona el problema de [mantener un enlace entre el productor de un dato y sus consumidores](https://www.notion.so/asdolo/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975#c0321a3e163c45348807d0dbb4648bb1).**
+- **Soluciona el problema de [mantener un enlace entre el productor de un dato y sus consumidores](https://www.notion.so/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975).**
 - A cada operando, se le asocia un alias y se indica si es válido o no.
 
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2040.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2040.png)
@@ -745,7 +771,7 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2041.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2041.png)
 
-- La instrucción 2 tiene un riesgo WAR en F8 con la instrucción 3.
+- La instrucción 2 tiene un riesgo WAR en F8 con la instrucción 4 .
 - La instrucción 5 tiene un riesgo WAR en F6 con la instrucción 2.
 - Reemplazamos los operandos problemáticos por sus respectivos aliases (S y T).
 
@@ -754,23 +780,24 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 ### **Reservation Station (RS)**
 
 - **Soluciona los otros tres problemas del algoritmo de Tomasulo.**
-    - **Soluciona el problema de [mantener en espera las instrucciones que todavía no se pueden ejecutar](https://www.notion.so/asdolo/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975#ec2674e5cbde4c80a09bc7b5579de51b).**
-    - **Soluciona el problema de [saber cuándo están disponibles los operandos de una instrucción](https://www.notion.so/asdolo/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975#c00f1cc2022b445c88df8598b0a030c3).**
-    - **Soluciona el problema de [ejecutar la instrucción cuando todos sus operandos estén disponibles](https://www.notion.so/asdolo/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975#d5c52ffa904c4430a8947f9d5ddf09d0).**
+    - **Soluciona el problema de [mantener en espera las instrucciones que todavía no se pueden ejecutar](https://www.notion.so/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975).**
+    - **Soluciona el problema de [saber cuándo están disponibles los operandos de una instrucción](https://www.notion.so/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975).**
+    - **Soluciona el problema de [ejecutar la instrucción cuando todos sus operandos estén disponibles](https://www.notion.so/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975).**
 - Cada línea de la RS es una instrucción y sus dos operandos.
 - La RS tiene un tamaño limitado.
 - Una vez realizado el renombre se le asigna, a la instrucción, una Reservation Station.
 - Una Reservation Station es un subsistema de hardware compuesto de bancos de registros internos que se encarga de mantener las instrucciones en espera hasta que estén listas para ser ejecutadas. Éste chequea constantemente por la disponibilidad de los operandos de la instrucción. Para cada uno de ellos cuyo valor no esté disponible, la RS guarda el tag que se le asignó en el paso anterior.
 - Cada vez que una unidad de ejecución pone Ready un operando, transmite su tag asociado junto con su valor a todas las RS. Cuando una instrucción tiene todos  sus operandos Ready, la RS espera a que la unidad funcional asociada a ella esté libre y luego la despacha.
-
+    
     ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled_Diagram_(1).png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled_Diagram_(1).png)
+    
 
 ### **Common Data Bus:**
 
 - Es un datapath que va por toda la arquitectura.
-- **Se usa para brodcastear el tag y value que salen de las ALU hacia la Register Alias Table y las RS para que tengan esos valores actualizados.**
+- **Se usa para broadcastear el tag y value que salen de las ALU hacia la Register Alias Table y las RS para que tengan esos valores actualizados.**
 
-### FPU de [IBM 360/91](https://www.notion.so/asdolo/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975#571969b6eefd4ed8a76aec1777096105) con la mejora de Tomasulo
+### FPU de [IBM 360/91](https://www.notion.so/Resumen-Final-Orga2-7e347eedef584449a5560e58e2399975) con la mejora de Tomasulo
 
 ![Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2043.png](Resumen%20Final%20Orga2%20a7de9775164c482cad5121a79d2a7fdc/Untitled%2043.png)
 
@@ -785,12 +812,12 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 // Defino si meto la instrucción en la RS o si stalleo el pipeline
 
 - Chequeamos que haya lugar en la RS para todos los operandos de la instrucción (tanto fuentes como destino).
-
+    
     // Hay lugar en la RS
-
+    
     1. Creo un alias para cada operando no válido de la instrucción
     2. Insertamos la instrucción y sus operandos renombrados en la RS. Estos valores los sacamos directamente de la Register Alias Table.
-
+    
 - Si no hay lugar, stall
 
 // La instrucción ya está en la RS
@@ -803,23 +830,24 @@ Para los obstáculos de Datos con superscalar, no podemos usar forwarding. El es
 // La instrucción ya está lista para ser ejecutada
 
 - Me fijo si hay alguna Unidad Funcional disponible (quien ejecuta la instrucción)
-
+    
     // Hay una Unidad Funcional disponible
-
-    1. Si hay, despacho la instrucción
-
+    
+    1. Despacho la instrucción
+    
     **// Listo, se despachó la instrucción ✅**
+    
 
 - Me fijo si finalizó la ejecución de la instrucción
-
+    
     // Finalizó la ejecución de la instrucción
-
+    
     1. La Unidad Funcional que ejecutó la instrucción broadcastea, usando el Common Data Bus, el tag y valor resultante.
-
+        
         // Esto significa que el operando destino de esta instrucción ahora está Ready. Entonces se lo comunico a los demás vía broadcast
-
+        
         // A la Register Alias Table le llega, por broadcast, el tag y valor
-
+        
     2. Si tiene ese tag guardado:
         1. Escribe el valor que le llega en el registro (R1, R2, etc), según corresponda con el tag.
         2. Marca ese tag como válido.
